@@ -1,0 +1,40 @@
+{
+ "SUBC.OL": [
+  "RES",
+  "SUP"
+ ],
+ "GJF.OL": [
+  "RES"
+ ],
+ "AKRBP.OL": [
+  "RES",
+  "SUP"
+ ],
+ "AKSO.OL": [],
+ "STB.OL": [],
+ "TOM.OL": [
+  "SUP"
+ ],
+ "ENTRA.OL": [],
+ "LSG.OL": [
+  "RES"
+ ],
+ "NHY.OL": [
+  "RES"
+ ],
+ "AKER.OL": [
+  "RES",
+  "SUP"
+ ],
+ "ORK.OL": [
+  "RES"
+ ],
+ "SALM.OL": [
+  "SUP"
+ ],
+ "DNB.OL": [
+  "SUP"
+ ],
+ "YAR.OL": [],
+ "TEL.OL": []
+}
