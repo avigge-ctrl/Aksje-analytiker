@@ -1,14 +1,16 @@
 {
  "SUBC.OL": [
   "RES",
-  "SUP"
+  "SELL",
+  "SUP",
+  "WR_OB_NEAR"
  ],
  "GJF.OL": [
   "RES"
  ],
  "AKRBP.OL": [
   "RES",
-  "SUP"
+  "SELL"
  ],
  "AKSO.OL": [],
  "STB.OL": [],
@@ -23,18 +25,24 @@
   "RES"
  ],
  "AKER.OL": [
+  "BUY",
   "RES",
-  "SUP"
+  "SUP",
+  "WR_OS"
  ],
  "ORK.OL": [
-  "RES"
+  "RES",
+  "SELL"
  ],
  "SALM.OL": [
+  "RES",
   "SUP"
  ],
  "DNB.OL": [
   "SUP"
  ],
- "YAR.OL": [],
+ "YAR.OL": [
+  "WR_OS_NEAR"
+ ],
  "TEL.OL": []
 }
