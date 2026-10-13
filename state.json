@@ -9,8 +9,8 @@
   "RES"
  ],
  "AKRBP.OL": [
-  "RES",
-  "SELL"
+  "SUP",
+  "WR_OB_NEAR"
  ],
  "AKSO.OL": [],
  "STB.OL": [],
@@ -26,23 +26,19 @@
  ],
  "AKER.OL": [
   "BUY",
-  "RES",
   "SUP",
   "WR_OS"
  ],
- "ORK.OL": [
-  "RES",
-  "SELL"
- ],
+ "ORK.OL": [],
  "SALM.OL": [
   "RES",
   "SUP"
  ],
  "DNB.OL": [
-  "SUP"
+  "RES"
  ],
  "YAR.OL": [
-  "WR_OS_NEAR"
+  "RES"
  ],
  "TEL.OL": []
 }
