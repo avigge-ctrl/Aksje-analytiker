@@ -9,40 +9,39 @@
   "WR_OB"
  ],
  "AKRBP.OL": [
-  "WR_OB"
+  "WR_OB_NEAR"
  ],
  "AKSO.OL": [
-  "SUP"
+  "RES"
  ],
  "STB.OL": [],
  "TOM.OL": [
-  "RES",
-  "SUP"
+  "RES"
  ],
  "ENTRA.OL": [],
  "LSG.OL": [
-  "RES"
+  "RES",
+  "SUP"
  ],
  "NHY.OL": [],
  "AKER.OL": [
-  "RES"
+  "RES",
+  "WR_OS"
  ],
  "ORK.OL": [
   "SUP"
  ],
  "SALM.OL": [
-  "BUY",
-  "SUP"
+  "RES"
  ],
  "DNB.OL": [
   "RES"
  ],
  "YAR.OL": [
-  "SUP"
+  "RES"
  ],
  "TEL.OL": [
   "RES",
-  "SELL",
-  "WR_OB"
+  "SELL"
  ]
 }
