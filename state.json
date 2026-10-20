@@ -6,30 +6,32 @@
  "GJF.OL": [
   "RES",
   "SELL",
-  "WR_OB"
- ],
- "AKRBP.OL": [
   "WR_OB_NEAR"
  ],
+ "AKRBP.OL": [],
  "AKSO.OL": [
-  "RES"
+  "BUY",
+  "SUP"
  ],
  "STB.OL": [],
  "TOM.OL": [
-  "RES"
+  "SUP"
  ],
  "ENTRA.OL": [],
  "LSG.OL": [
-  "RES",
-  "SUP"
+  "SUP",
+  "WR_OB_NEAR"
  ],
- "NHY.OL": [],
+ "NHY.OL": [
+  "WR_OS_NEAR"
+ ],
  "AKER.OL": [
-  "RES",
-  "WR_OS"
+  "BUY",
+  "SUP",
+  "WR_OS_NEAR"
  ],
  "ORK.OL": [
-  "SUP"
+  "WR_OB_NEAR"
  ],
  "SALM.OL": [
   "RES"
@@ -37,11 +39,10 @@
  "DNB.OL": [
   "RES"
  ],
- "YAR.OL": [
-  "RES"
- ],
+ "YAR.OL": [],
  "TEL.OL": [
   "RES",
-  "SELL"
+  "SELL",
+  "WR_OB_NEAR"
  ]
 }
