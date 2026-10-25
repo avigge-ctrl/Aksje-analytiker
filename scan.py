@@ -6,7 +6,7 @@ Bruk:  python scan.py            (sender e-post hvis det finnes nye varsler)
        python scan.py --dry      (skriver bare ut, sender ikke, endrer ikke state)
 """
 import csv, html as _h, json, os, smtplib, sys
-from datetime import datetime
+from datetime import datetime, date
 from email.message import EmailMessage
 from pathlib import Path
 
@@ -125,6 +125,48 @@ def fetch(ticker):
     return df if len(df) > 60 else None
 
 
+COUNTRIES = {".OL": "Norge", ".ST": "Sverige", ".CO": "Danmark", ".HE": "Finland",
+             ".VI": "Østerrike", ".MI": "Italia", ".PA": "Frankrike", ".DE": "Tyskland",
+             ".AS": "Nederland", ".MC": "Spania", ".BR": "Belgia", ".LS": "Portugal",
+             ".IR": "Irland"}
+COUNTRY_ORDER = ["Norge", "Sverige", "Danmark", "Finland"]
+
+
+def country_of(ticker):
+    return COUNTRIES.get(ticker[ticker.rfind("."):].upper(), "Annet")
+
+
+def report_days(ticker):
+    """(dager siden siste rapport, dager til neste rapport). None hvis ukjent."""
+    today = date.today()
+    past, future = [], []
+    try:
+        ed = yf.Ticker(ticker).get_earnings_dates(limit=12)
+        if ed is not None and len(ed):
+            for ts in ed.index:
+                d = ts.date()
+                (past if d <= today else future).append(d)
+    except Exception:
+        pass
+    if not future:  # reserve: kalenderen
+        try:
+            cal = yf.Ticker(ticker).calendar or {}
+            for d in cal.get("Earnings Date", []) or []:
+                if d > today:
+                    future.append(d)
+        except Exception:
+            pass
+    last = (today - max(past)).days if past else None
+    nxt = (min(future) - today).days if future else None
+    return last, nxt
+
+
+def rpt_text(it):
+    a = "–" if it["last_d"] is None else f'{it["last_d"]} d siden'
+    b = "–" if it["next_d"] is None else ("i dag" if it["next_d"] == 0 else f'om {it["next_d"]} d')
+    return a, b
+
+
 BADGES = {  # nøkkel: (tekst, tekstfarge, bakgrunn)
     "BUY":        (f"Nær støtte + %R ≤ {COMBO_LOW}",  "#ffffff", "#12b76a"),
     "SELL":       (f"Nær motstand + %R ≥ {COMBO_HIGH}", "#ffffff", "#d92d20"),
@@ -208,7 +250,8 @@ def build_html(items, problems):
             f'<td width="50%" valign="top">{lvl_block("Motstand", lv["res"], it["price"], "RES" in it["alerts"], "#b42318")}</td>'
             '</tr></table>'
             '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:12px"><tr>'
-            f'<td style="font-size:12px;color:#667085">Williams %R <b style="color:#101828">{fmt(it["wr"], 1)}</b></td>'
+            f'<td style="font-size:12px;color:#667085">Williams %R <b style="color:#101828">{fmt(it["wr"], 1)}</b>'
+            f'<div style="margin-top:3px">Rapport: siste {rpt_text(it)[0]} · neste {rpt_text(it)[1]}</div></td>'
             f'<td align="right">{gauge(it["wr"])}</td></tr></table>'
             '</td></tr></table>')
 
@@ -220,7 +263,21 @@ def build_html(items, problems):
 
     buy_html = "".join(card(i, list(i["alerts"]), "#12b76a", bool(i["fresh"])) for i in buy)
     sell_html = "".join(card(i, list(i["alerts"]), "#d92d20", bool(i["fresh"])) for i in sell)
-    oth_html = "".join(card(i, i["fresh"]) for i in others)
+    def compact_row(it):
+        bd = "".join(
+            f'<span style="display:inline-block;margin:0 4px 2px 0;font-size:10px;font-weight:600;'
+            f'color:{BADGES[k][1]};background:{BADGES[k][2]};padding:1px 6px;border-radius:8px;white-space:nowrap">'
+            f'{BADGES[k][0]}</span>' for k in sorted(it["fresh"], key=lambda x: list(BADGES).index(x)))
+        return (f'<tr><td style="padding:7px 10px;font-size:13px;color:#101828;border-bottom:1px solid #f2f4f7">'
+                f'{esc(it["name"])} <span style="color:#667085;font-size:11px">{esc(it["ticker"])}</span>'
+                f'<div style="margin-top:3px">{bd}</div>'
+                f'<div style="font-size:11px;color:#667085;margin-top:2px">Rapport: siste {rpt_text(it)[0]} · neste {rpt_text(it)[1]}</div></td>'
+                f'<td align="right" valign="top" style="padding:7px 10px;font-size:13px;color:#101828;'
+                f'border-bottom:1px solid #f2f4f7">{fmt(it["price"])}'
+                f'<div style="font-size:11px;color:#667085">%R {fmt(it["wr"], 1)}</div></td></tr>')
+    oth_html = ('<table role="presentation" width="100%" cellpadding="0" cellspacing="0" '
+                'style="border:1px solid #e4e7ec;border-radius:8px;border-collapse:separate">'
+                + "".join(compact_row(i) for i in others) + '</table>') if others else ""
 
     body = section(f"Nær støtte og Williams %R ≤ {COMBO_LOW}",
                    "Sortert etter avstand til støtte", "#12b76a", buy_html, "Ingen aksjer akkurat nå.")
@@ -237,37 +294,53 @@ def build_html(items, problems):
         return (f'<div style="font-size:13px;color:#101828;font-weight:600">{fmt(lv[0])}</div>'
                 f'<div style="font-size:11px;font-weight:{w};color:{c}">{pct_str(lv, price)}</div>')
 
-    rows = []
-    for idx, it in enumerate(items):
-        bg = "#ecfdf3" if "BUY" in it["alerts"] else "#fef3f2" if "SELL" in it["alerts"] \
-            else "#f9fafb" if idx % 2 else "#ffffff"
-        status = ""
-        if it["alerts"]:
+    th = 'style="padding:7px 8px;font-size:11px;font-weight:600;color:#667085;text-align:{};border-bottom:1px solid #e4e7ec"'
+    order = COUNTRY_ORDER + sorted({i["country"] for i in items} - set(COUNTRY_ORDER))
+    parts = []
+    for c in order:
+        grp = sorted([i for i in items if i["country"] == c],
+                     key=lambda i: (i["next_d"] is None, i["next_d"] if i["next_d"] is not None else 0, i["name"]))
+        if not grp:
+            continue
+        rows = []
+        for idx, it in enumerate(grp):
+            bg = "#ecfdf3" if "BUY" in it["alerts"] else "#fef3f2" if "SELL" in it["alerts"] \
+                else "#f9fafb" if idx % 2 else "#ffffff"
             ks = sorted(it["alerts"], key=lambda x: list(BADGES).index(x))
             status = "".join(
-                f'<div style="margin-top:3px"><span style="font-size:10px;font-weight:600;color:{BADGES[k][1]};'
-                f'background:{BADGES[k][2]};padding:1px 6px;border-radius:8px;white-space:nowrap">'
-                f'{BADGES[k][0]}</span></div>' for k in ks)
-        lv = it["levels"]
-        rows.append(
-            f'<tr style="background:{bg}">'
-            f'<td valign="top" style="padding:8px 10px;font-size:13px;color:#101828">{esc(it["name"])}{status}</td>'
-            f'<td align="right" valign="top" style="padding:8px 10px;font-size:13px;color:#101828">{fmt(it["price"])}</td>'
-            f'<td align="right" valign="top" style="padding:8px 10px">{small_lvl(lv["sup"], it["price"], "SUP" in it["alerts"], "#067647")}</td>'
-            f'<td align="right" valign="top" style="padding:8px 10px">{small_lvl(lv["res"], it["price"], "RES" in it["alerts"], "#b42318")}</td>'
-            f'<td align="right" valign="top" style="padding:8px 10px;font-size:13px;color:#101828">{fmt(it["wr"], 1)}'
-            f'<div style="margin-top:4px">{gauge(it["wr"], 60)}</div></td></tr>')
-    th = 'style="padding:8px 10px;font-size:11px;font-weight:600;color:#667085;text-align:{};border-bottom:1px solid #e4e7ec"'
+                f'<span style="display:inline-block;margin:3px 3px 0 0;font-size:10px;font-weight:600;color:{BADGES[k][1]};'
+                f'background:{BADGES[k][2]};padding:1px 6px;border-radius:8px;white-space:nowrap">{BADGES[k][0]}</span>'
+                for k in ks)
+            lv = it["levels"]
+            lvl = ""
+            if it["alerts"]:
+                lvl = ('<div style="font-size:11px;color:#667085;margin-top:3px">'
+                       f'Støtte {fmt(lv["sup"][0]) + " (" + pct_str(lv["sup"], it["price"]) + ")" if lv["sup"] else "–"}'
+                       f' · Motstand {fmt(lv["res"][0]) + " (" + pct_str(lv["res"], it["price"]) + ")" if lv["res"] else "–"}</div>')
+            last, nxt = rpt_text(it)
+            soon = it["next_d"] is not None and it["next_d"] <= 7
+            nstyle = "font-weight:700;color:#b54708" if soon else "color:#101828"
+            rows.append(
+                f'<tr style="background:{bg}">'
+                f'<td valign="top" style="padding:7px 8px;font-size:13px;color:#101828">{esc(it["name"])}'
+                f' <span style="color:#98a2b3;font-size:10px">{esc(it["ticker"])}</span>{("<div>" + status + "</div>") if status else ""}{lvl}</td>'
+                f'<td align="right" valign="top" style="padding:7px 8px;font-size:13px;color:#101828">{fmt(it["price"])}</td>'
+                f'<td align="right" valign="top" style="padding:7px 8px;font-size:12px;color:#101828">{fmt(it["wr"], 0)}</td>'
+                f'<td align="right" valign="top" style="padding:7px 8px;font-size:12px;color:#475467;white-space:nowrap">{last}</td>'
+                f'<td align="right" valign="top" style="padding:7px 8px;font-size:12px;white-space:nowrap;{nstyle}">{nxt}</td></tr>')
+        parts.append(
+            f'<tr><td colspan="5" style="padding:9px 8px;font-size:13px;font-weight:700;color:#ffffff;background:#344054">'
+            f'{esc(c)} <span style="font-weight:400;color:#d0d5dd">· {len(grp)} aksjer</span></td></tr>' + "".join(rows))
     overview = (
-        '<h3 style="font-size:14px;color:#101828;margin:26px 0 4px 0">Oversikt</h3>'
-        '<p style="font-size:12px;color:#667085;margin:0 0 8px 0">Støtte og motstand: nærmeste sone og avstand fra kursen. '
+        '<h3 style="font-size:14px;color:#101828;margin:26px 0 4px 0">Alle aksjer per land</h3>'
+        '<p style="font-size:12px;color:#667085;margin:0 0 8px 0">Sortert etter nærmeste neste rapport. '
+        'Neste rapportdato er hentet fra Yahoo og kan være et estimat. Oransje = rapport innen 7 dager. '
         'Williams %R: −100 = oversolgt, 0 = overkjøpt.</p>'
         '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" '
         'style="border:1px solid #e4e7ec;border-radius:8px;border-collapse:separate;overflow:hidden">'
         f'<tr><td {th.format("left")}>Selskap</td><td {th.format("right")}>Kurs</td>'
-        f'<td {th.format("right")}>Støtte</td><td {th.format("right")}>Motstand</td>'
-        f'<td {th.format("right")}>%R</td></tr>'
-        + "".join(rows) + '</table>')
+        f'<td {th.format("right")}>%R</td><td {th.format("right")}>Siste rapport</td>'
+        f'<td {th.format("right")}>Neste</td></tr>' + "".join(parts) + '</table>')
 
     prob_html = ""
     if problems:
@@ -288,7 +361,7 @@ def build_html(items, problems):
         'style="max-width:600px;width:100%;background:#ffffff;border-radius:12px;border-collapse:separate;overflow:hidden">'
         '<tr><td style="background:#0b2545;padding:18px 22px">'
         '<div style="font-size:20px;font-weight:700;color:#ffffff">Aksjevarsel</div>'
-        f'<div style="font-size:13px;color:#b9c7dc;margin-top:2px">{today} · Oslo Børs · {pre}</div></td></tr>'
+        f'<div style="font-size:13px;color:#b9c7dc;margin-top:2px">{today} · {pre}</div></td></tr>'
         '<tr><td style="padding:6px 22px 20px 22px">'
         f'{body}{overview}{prob_html}'
         '<p style="font-size:11px;color:#98a2b3;margin:22px 0 0 0">Tekniske signaler basert på daglige '
@@ -318,12 +391,19 @@ def build_text(items, problems):
         for it in oth:
             lines.append(line(it))
             lines += [f"    - {it['alerts'][k]}" for k in it["fresh"]]
-    lines += ["", "Oversikt (Williams %R: -100 = oversolgt, 0 = overkjøpt):"]
-    for it in items:
-        lines.append(f"  {it['name']:<22} kurs {it['price']:>8.2f}  %R {it['wr']:>6.1f}  "
-                     f"støtte {lvl_text(it['levels']['sup'], it['price'])}  "
-                     f"motstand {lvl_text(it['levels']['res'], it['price'])}{'  *' if it['alerts'] else ''}")
-    lines.append("  (* = har aktivt varsel)")
+    lines += ["", "ALLE AKSJER PER LAND (sortert etter neste rapport; Williams %R: -100 = oversolgt, 0 = overkjøpt):"]
+    order = COUNTRY_ORDER + sorted({i["country"] for i in items} - set(COUNTRY_ORDER))
+    for c in order:
+        grp = sorted([i for i in items if i["country"] == c],
+                     key=lambda i: (i["next_d"] is None, i["next_d"] if i["next_d"] is not None else 0, i["name"]))
+        if not grp:
+            continue
+        lines += ["", f"{c.upper()} ({len(grp)})"]
+        for it in grp:
+            last, nxt = rpt_text(it)
+            flag = "  *" + ",".join(sorted(it["alerts"])) if it["alerts"] else ""
+            lines.append(f"  {it['name']:<24} kurs {it['price']:>9.2f}  %R {it['wr']:>6.1f}  "
+                         f"siste rapport {last:<11} neste {nxt}{flag}")
     if problems:
         lines += ["", "Problemer med data:"] + [f"  - {p}" for p in problems]
     lines += ["", "Tekniske signaler, ikke investeringsråd."]
@@ -364,7 +444,9 @@ def main():
         fresh = [k for k in alerts if dry or k not in state.get(ticker, [])]
         fresh.sort(key=lambda k: list(BADGES).index(k))
         print(f"{ticker:9} kurs {price:8.2f}  %R {wr:7.1f}  aktive: {sorted(alerts) or '-'}")
-        items.append(dict(name=name, ticker=ticker, price=price, wr=wr, alerts=alerts, fresh=fresh, levels=levels))
+        last_d, next_d = report_days(ticker)
+        items.append(dict(name=name, ticker=ticker, price=price, wr=wr, alerts=alerts, fresh=fresh,
+                          levels=levels, country=country_of(ticker), last_d=last_d, next_d=next_d))
 
     hits = [i for i in items if i["fresh"]]
     if hits or problems:
