@@ -1,7 +1,7 @@
 name: Aksjeskanner
 on:
   schedule:
-    - cron: "30 16 * * 1-5"   # 16:30 UTC = 17:30 vintertid / 18:30 sommertid i Norge
+    - cron: "30 21 * * 1-5"   # 21:30 UTC = etter USA-børsene stenger (22:30 vintertid / 23:30 sommertid i Norge)
   workflow_dispatch: {}
 
 permissions:

@@ -128,12 +128,19 @@ def fetch(ticker):
 COUNTRIES = {".OL": "Norge", ".ST": "Sverige", ".CO": "Danmark", ".HE": "Finland",
              ".VI": "Østerrike", ".MI": "Italia", ".PA": "Frankrike", ".DE": "Tyskland",
              ".AS": "Nederland", ".MC": "Spania", ".BR": "Belgia", ".LS": "Portugal",
-             ".IR": "Irland"}
+             ".IR": "Irland", ".L": "Storbritannia", ".SW": "Sveits", ".TO": "Canada"}
 COUNTRY_ORDER = ["Norge", "Sverige", "Danmark", "Finland"]
 
 
 def country_of(ticker):
+    if "." not in ticker:
+        return "USA"
     return COUNTRIES.get(ticker[ticker.rfind("."):].upper(), "Annet")
+
+
+def country_order(items):
+    cs = {i["country"] for i in items}
+    return [c for c in COUNTRY_ORDER if c in cs] + sorted(cs - set(COUNTRY_ORDER))
 
 
 def report_days(ticker):
@@ -295,7 +302,7 @@ def build_html(items, problems):
                 f'<div style="font-size:11px;font-weight:{w};color:{c}">{pct_str(lv, price)}</div>')
 
     th = 'style="padding:7px 8px;font-size:11px;font-weight:600;color:#667085;text-align:{};border-bottom:1px solid #e4e7ec"'
-    order = COUNTRY_ORDER + sorted({i["country"] for i in items} - set(COUNTRY_ORDER))
+    order = country_order(items)
     parts = []
     for c in order:
         grp = sorted([i for i in items if i["country"] == c],
@@ -323,7 +330,8 @@ def build_html(items, problems):
             rows.append(
                 f'<tr style="background:{bg}">'
                 f'<td valign="top" style="padding:7px 8px;font-size:13px;color:#101828">{esc(it["name"])}'
-                f' <span style="color:#98a2b3;font-size:10px">{esc(it["ticker"])}</span>{("<div>" + status + "</div>") if status else ""}{lvl}</td>'
+                f' <span style="color:#98a2b3;font-size:10px">{esc(it["ticker"])}</span>'
+                f'{("<div>" + status + "</div>") if status else ""}{lvl}</td>'
                 f'<td align="right" valign="top" style="padding:7px 8px;font-size:13px;color:#101828">{fmt(it["price"])}</td>'
                 f'<td align="right" valign="top" style="padding:7px 8px;font-size:12px;color:#101828">{fmt(it["wr"], 0)}</td>'
                 f'<td align="right" valign="top" style="padding:7px 8px;font-size:12px;color:#475467;white-space:nowrap">{last}</td>'
@@ -392,7 +400,7 @@ def build_text(items, problems):
             lines.append(line(it))
             lines += [f"    - {it['alerts'][k]}" for k in it["fresh"]]
     lines += ["", "ALLE AKSJER PER LAND (sortert etter neste rapport; Williams %R: -100 = oversolgt, 0 = overkjøpt):"]
-    order = COUNTRY_ORDER + sorted({i["country"] for i in items} - set(COUNTRY_ORDER))
+    order = country_order(items)
     for c in order:
         grp = sorted([i for i in items if i["country"] == c],
                      key=lambda i: (i["next_d"] is None, i["next_d"] if i["next_d"] is not None else 0, i["name"]))
