@@ -1,12 +1,13 @@
 {
  "SUBC.OL": [
-  "RES",
-  "SUP"
+  "RES"
  ],
  "GJF.OL": [
   "RES"
  ],
- "AKRBP.OL": [],
+ "AKRBP.OL": [
+  "WR_OB"
+ ],
  "AKSO.OL": [
   "SUP"
  ],
@@ -33,10 +34,12 @@
  "DNB.OL": [
   "WR_OB"
  ],
- "YAR.OL": [],
+ "YAR.OL": [
+  "RES"
+ ],
  "TEL.OL": [
-  "SUP",
-  "WR_OB_NEAR"
+  "RES",
+  "SELL"
  ],
  "KOG.OL": [
   "SUP"
@@ -45,50 +48,45 @@
   "RES"
  ],
  "SB1NO.OL": [
-  "SUP",
-  "WR_OB_NEAR"
+  "RES",
+  "SELL"
  ],
- "VEI.OL": [
-  "WR_OB_NEAR"
+ "VEI.OL": [],
+ "VEND.OL": [
+  "RES"
  ],
- "VEND.OL": [],
  "AFG.OL": [
-  "WR_OB_NEAR"
+  "WR_OB"
  ],
  "ATEA.OL": [
   "RES",
-  "SELL",
   "SUP"
  ],
  "BRG.OL": [
   "BUY",
-  "RES",
-  "SUP"
+  "SUP",
+  "WR_OS_NEAR"
  ],
- "NONG.OL": [
-  "WR_OB_NEAR"
+ "NONG.OL": [],
+ "MING.OL": [],
+ "SBNOR.OL": [
+  "RES"
  ],
- "MING.OL": [
-  "WR_OB"
- ],
- "SBNOR.OL": [],
  "ALFA.ST": [
   "SUP"
  ],
  "ASSA-B.ST": [
+  "SUP",
   "WR_OB"
  ],
  "ATCO-A.ST": [
-  "RES",
   "SUP"
  ],
  "ATCO-B.ST": [
-  "RES",
-  "SUP"
+  "RES"
  ],
  "EPI-A.ST": [
-  "RES",
-  "SUP"
+  "RES"
  ],
  "EPI-B.ST": [
   "SUP"
@@ -97,11 +95,11 @@
   "SUP"
  ],
  "GETI-B.ST": [
-  "WR_OB"
+  "WR_OB_NEAR"
  ],
  "HM-B.ST": [
   "SUP",
-  "WR_OB_NEAR"
+  "WR_OB"
  ],
  "HEXA-B.ST": [
   "WR_OB"
@@ -110,45 +108,45 @@
   "RES"
  ],
  "INDU-A.ST": [
-  "SUP",
-  "WR_OB"
+  "RES"
  ],
  "INDU-C.ST": [
-  "SUP",
-  "WR_OB"
+  "RES"
  ],
  "INDT.ST": [
-  "SUP"
+  "RES"
  ],
  "INVE-B.ST": [
-  "SUP",
-  "WR_OB"
+  "RES"
  ],
  "KINV-B.ST": [],
  "LATO-B.ST": [
+  "RES",
+  "SELL",
   "SUP",
-  "WR_OB"
+  "WR_OB_NEAR"
  ],
  "LUND-B.ST": [
-  "WR_OB"
+  "SUP",
+  "WR_OB_NEAR"
  ],
- "NIBE-B.ST": [
-  "WR_OB"
- ],
+ "NIBE-B.ST": [],
  "SAND.ST": [
   "SUP"
  ],
  "SECU-B.ST": [
-  "RES"
+  "RES",
+  "SUP"
  ],
  "SKA-B.ST": [
-  "SUP",
+  "RES",
+  "SELL",
   "WR_OB"
  ],
  "SKF-B.ST": [
   "RES",
   "SELL",
-  "WR_OB_NEAR"
+  "WR_OB"
  ],
  "SCA-B.ST": [],
  "TEL2-B.ST": [],
@@ -156,33 +154,34 @@
   "SUP"
  ],
  "TREL-B.ST": [
-  "SUP"
+  "RES"
  ],
  "AAK.ST": [],
  "ADDT-B.ST": [
+  "BUY",
   "RES",
-  "SUP"
+  "SUP",
+  "WR_OS_NEAR"
  ],
- "AXFO.ST": [],
+ "AXFO.ST": [
+  "WR_OB_NEAR"
+ ],
  "BOL.ST": [
-  "SUP"
+  "RES"
  ],
  "SAAB-B.ST": [
   "RES",
   "SELL",
-  "WR_OB"
+  "WR_OB_NEAR"
  ],
  "SEB-A.ST": [],
  "SSAB-A.ST": [
-  "SUP"
+  "RES"
  ],
  "SSAB-B.ST": [
-  "RES",
-  "SUP"
+  "RES"
  ],
- "SHB-A.ST": [
-  "WR_OB"
- ],
+ "SHB-A.ST": [],
  "SWEC-B.ST": [
   "RES",
   "SELL",
@@ -191,57 +190,54 @@
  ],
  "SWED-A.ST": [],
  "THULE.ST": [
-  "SUP"
+  "RES"
  ],
  "VOLV-A.ST": [
-  "RES",
-  "SUP"
+  "RES"
  ],
  "VOLV-B.ST": [
   "RES",
   "SUP"
  ],
  "ELISA.HE": [
-  "WR_OS_NEAR"
+  "WR_OS"
  ],
  "KESKOB.HE": [
-  "WR_OB_NEAR"
+  "WR_OB"
  ],
  "KNEBV.HE": [
   "SUP",
   "WR_OB_NEAR"
  ],
  "METSO.HE": [
-  "RES",
-  "SELL",
-  "SUP",
-  "WR_OB_NEAR"
+  "RES"
  ],
  "SAMPO.HE": [
   "RES",
   "SELL",
+  "SUP",
   "WR_OB"
  ],
  "STERV.HE": [
+  "RES",
   "SUP"
  ],
  "UPM.HE": [
-  "RES"
- ],
- "VALMT.HE": [
-  "RES"
- ],
- "WRT1V.HE": [
-  "RES"
- ],
- "TIETO.HE": [
   "SUP"
  ],
+ "VALMT.HE": [
+  "RES",
+  "SUP"
+ ],
+ "WRT1V.HE": [
+  "SUP"
+ ],
+ "TIETO.HE": [],
  "CARL-B.CO": [
-  "RES"
+  "SUP"
  ],
  "DSV.CO": [
-  "WR_OB"
+  "SUP"
  ],
  "TRYG.CO": [
   "WR_OB"
@@ -250,33 +246,41 @@
  "MAERSK-B.CO": [],
  "ALK-B.CO": [],
  "AMBU-B.CO": [
-  "RES",
-  "SELL"
+  "SUP",
+  "WR_OB"
  ],
- "COLO-B.CO": [],
- "AMAG.VI": [],
- "EQNR.OL": [],
+ "COLO-B.CO": [
+  "WR_OB_NEAR"
+ ],
+ "AMAG.VI": [
+  "WR_OB"
+ ],
+ "EQNR.OL": [
+  "WR_OB_NEAR"
+ ],
  "MOWI.OL": [
   "WR_OB"
  ],
  "ERIC-B.ST": [
   "RES",
   "SELL",
-  "SUP",
   "WR_OB"
  ],
  "ELUX-B.ST": [
-  "RES",
-  "SUP"
+  "RES"
  ],
  "EKTA-B.ST": [
-  "SUP"
+  "WR_OB"
  ],
  "EQT.ST": [
+  "RES",
+  "SELL",
   "SUP",
   "WR_OB"
  ],
- "HUSQ-B.ST": [],
+ "HUSQ-B.ST": [
+  "RES"
+ ],
  "HMS.ST": [
   "RES"
  ],
@@ -285,15 +289,20 @@
  ],
  "INVE-A.ST": [
   "RES",
-  "SELL",
-  "SUP",
-  "WR_OB"
+  "SELL"
  ],
  "LAGR-B.ST": [
-  "RES"
+  "SUP"
  ],
- "LIFCO-B.ST": [],
- "LOOMIS.ST": [],
+ "LIFCO-B.ST": [
+  "BUY",
+  "SUP",
+  "WR_OS"
+ ],
+ "LOOMIS.ST": [
+  "BUY",
+  "SUP"
+ ],
  "MTRS.ST": [],
  "MYCR.ST": [
   "RES"
@@ -303,38 +312,34 @@
   "WR_OB"
  ],
  "RATO-B.ST": [
+  "SUP",
   "WR_OB_NEAR"
  ],
- "NOBA.ST": [
-  "RES"
- ],
- "DANSKE.CO": [
-  "RES"
- ],
+ "NOBA.ST": [],
+ "DANSKE.CO": [],
  "DEMANT.CO": [
   "WR_OB_NEAR"
  ],
- "GMAB.CO": [
+ "GMAB.CO": [],
+ "GN.CO": [
+  "SUP"
+ ],
+ "HLUN-B.CO": [
   "WR_OB_NEAR"
  ],
- "GN.CO": [
-  "WR_OB"
- ],
- "HLUN-B.CO": [],
  "ISS.CO": [
   "SUP"
  ],
  "JYSK.CO": [
-  "SUP"
- ],
- "NETC.CO": [],
- "NKT.CO": [
   "RES"
  ],
+ "NETC.CO": [
+  "WR_OB_NEAR"
+ ],
+ "NKT.CO": [],
  "NSIS-B.CO": [],
  "ROCK-A.CO": [
   "RES",
-  "SELL",
   "SUP"
  ],
  "RBREW.CO": [],
@@ -342,181 +347,194 @@
  "HUH1V.HE": [
   "SUP"
  ],
- "KEMIRA.HE": [],
+ "KEMIRA.HE": [
+  "WR_OS_NEAR"
+ ],
  "KCR.HE": [
-  "RES",
-  "SUP"
+  "RES"
  ],
  "MANTA.HE": [],
  "NESTE.HE": [
-  "RES",
-  "WR_OS"
+  "SUP"
  ],
  "NDA-FI.HE": [
-  "RES"
+  "RES",
+  "SUP"
  ],
  "LDO.MI": [
   "RES",
-  "SELL",
   "SUP"
  ],
  "MONC.MI": [
-  "RES",
-  "WR_OS"
- ],
- "MMM": [
   "SUP"
  ],
+ "MMM": [],
  "ABT": [
   "SUP"
  ],
  "ABBV": [],
  "ACN": [
-  "SUP"
+  "RES",
+  "SELL"
  ],
  "ALL": [
-  "RES",
-  "SUP"
+  "SUP",
+  "WR_OB_NEAR"
  ],
  "GOOGL": [
   "BUY",
+  "RES",
   "SUP",
-  "WR_OS_NEAR"
+  "WR_OS"
  ],
  "GOOG": [
+  "BUY",
   "RES",
-  "WR_OS_NEAR"
+  "SUP",
+  "WR_OS"
  ],
  "MO": [
   "SUP"
  ],
  "AMZN": [
-  "RES"
+  "BUY",
+  "SUP"
  ],
  "AEP": [
   "RES",
   "SELL",
-  "SUP",
-  "WR_OB_NEAR"
+  "SUP"
  ],
  "AXP": [
   "RES"
  ],
  "AIG": [
-  "RES",
   "SUP"
  ],
  "AMGN": [
-  "SUP",
-  "WR_OB_NEAR"
+  "RES",
+  "SELL"
  ],
  "AAPL": [
-  "SUP"
+  "RES"
  ],
  "T": [
   "WR_OS_NEAR"
  ],
  "BAC": [
-  "SUP"
+  "RES"
  ],
  "BK": [],
  "BAX": [],
  "BRK-A": [],
- "BRK-B": [],
+ "BRK-B": [
+  "WR_OB"
+ ],
  "BMY": [],
  "COF": [],
- "CAT": [],
- "CVX": [],
+ "CAT": [
+  "WR_OS_NEAR"
+ ],
+ "CVX": [
+  "WR_OB_NEAR"
+ ],
  "CSCO": [
   "RES"
  ],
  "C": [
   "RES",
-  "SUP"
+  "WR_OS_NEAR"
  ],
  "KO": [],
  "CL": [
   "SUP"
  ],
- "CMCSA": [],
- "COP": [],
- "COST": [
-  "SUP"
- ],
- "CVS": [
+ "CMCSA": [
   "RES"
  ],
- "DVN": [
+ "COP": [
+  "WR_OB_NEAR"
+ ],
+ "COST": [
   "RES",
   "SELL"
  ],
+ "CVS": [
+  "SUP"
+ ],
+ "DVN": [
+  "SUP",
+  "WR_OB_NEAR"
+ ],
  "DOW": [
-  "RES",
-  "SELL",
+  "SUP",
   "WR_OB_NEAR"
  ],
  "EBAY": [
-  "RES"
+  "SUP"
  ],
  "LLY": [],
  "EMR": [
-  "SUP",
-  "WR_OB"
+  "RES"
  ],
  "ERIC": [
+  "SUP",
   "WR_OB"
  ],
  "EXC": [
   "RES",
   "SELL",
   "SUP",
-  "WR_OB"
+  "WR_OB_NEAR"
  ],
  "FDX": [
-  "SUP",
-  "WR_OB"
+  "RES"
  ],
  "F": [],
  "GE": [],
  "GD": [
-  "WR_OB_NEAR"
+  "RES",
+  "SELL",
+  "WR_OB"
  ],
  "GM": [
-  "SUP"
+  "RES"
  ],
- "GILD": [
-  "WR_OB_NEAR"
- ],
+ "GILD": [],
  "GS": [
-  "RES",
-  "SUP"
- ],
- "HPE": [
   "RES"
  ],
+ "HPE": [],
  "HD": [
-  "RES"
+  "RES",
+  "SELL"
  ],
  "HON": [
   "RES",
   "SUP"
  ],
- "HPQ": [],
- "IBM": [
-  "RES",
-  "SELL"
+ "HPQ": [
+  "WR_OB"
  ],
- "INTC": [],
- "JNJ": [],
- "JPM": [],
- "LMT": [
+ "IBM": [
   "RES",
   "SELL",
   "WR_OB_NEAR"
  ],
+ "INTC": [],
+ "JNJ": [
+  "SUP"
+ ],
+ "JPM": [],
+ "LMT": [
+  "SUP",
+  "WR_OB"
+ ],
  "LOW": [],
  "MA": [],
- "MCD": [],
+ "MCD": [
+  "WR_OB_NEAR"
+ ],
  "MDT": [
   "SUP"
  ],
@@ -526,76 +544,69 @@
  ],
  "MSFT": [],
  "MDLZ": [
-  "RES",
-  "SUP"
- ],
- "MS": [
-  "SUP"
- ],
- "NKE": [],
- "NSC": [
-  "WR_OB"
- ],
- "ORCL": [
   "RES"
  ],
- "PYPL": [],
- "PEP": [
-  "RES",
+ "MS": [
+  "RES"
+ ],
+ "NKE": [],
+ "NSC": [],
+ "ORCL": [],
+ "PYPL": [
   "SUP"
+ ],
+ "PEP": [
+  "RES"
  ],
  "PFE": [],
  "PM": [],
  "PG": [],
  "QCOM": [
-  "SUP",
-  "WR_OB"
+  "RES",
+  "SELL"
  ],
  "RTX": [
-  "SUP"
+  "WR_OB"
  ],
  "SLB": [
+  "RES",
+  "SELL",
   "SUP",
-  "WR_OB"
+  "WR_OB_NEAR"
  ],
  "SO": [
   "SUP"
  ],
  "SBUX": [
+  "RES",
+  "SELL",
   "SUP",
   "WR_OB"
  ],
- "TGT": [
-  "WR_OS_NEAR"
- ],
+ "TGT": [],
  "TXN": [
-  "RES",
-  "SELL",
   "WR_OB"
  ],
- "KHC": [
-  "SUP"
- ],
+ "KHC": [],
  "USB": [],
  "UNP": [
-  "WR_OB"
+  "WR_OB_NEAR"
  ],
  "UPS": [
   "RES",
-  "SELL",
-  "WR_OB"
+  "SELL"
  ],
  "UNH": [
   "RES",
   "SUP"
  ],
  "VZ": [
-  "RES",
   "SUP"
  ],
  "V": [],
  "WMT": [
-  "RES"
+  "RES",
+  "SELL"
  ],
  "DIS": [
   "SUP"
@@ -608,26 +619,29 @@
   "SUP"
  ],
  "ABBN.SW": [],
- "AZN.L": [],
+ "AZN.L": [
+  "SUP"
+ ],
  "DGE.L": [],
  "GSK.L": [
   "SUP"
  ],
- "HSBA.L": [],
- "ULVR.L": [
-  "RES",
+ "HSBA.L": [
   "SUP"
+ ],
+ "ULVR.L": [
+  "RES"
  ],
  "SAN.MC": [
   "SUP"
  ],
  "ALIV-SDB.ST": [
-  "RES",
   "SUP"
  ],
  "HAFNI.OL": [],
  "SNI.OL": [
-  "RES"
+  "RES",
+  "SUP"
  ],
  "BAKKA.OL": [
   "SUP",
